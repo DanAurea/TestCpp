@@ -13,7 +13,7 @@
 /*---- QT Includes ----*/
 #include <QFileDialog>
 #include <QHBoxLayout>
-
+#include <qdebug.h>
 //-----------------------------------------------------------------------------------------------------------------
 Widget::Widget(QWidget * p_parent) : QWidget(p_parent)
 //-----------------------------------------------------------------------------------------------------------------
@@ -21,7 +21,7 @@ Widget::Widget(QWidget * p_parent) : QWidget(p_parent)
 	m_ui.setupUi(this);
 
 	//Connect loadButton
-	//TODO
+	QObject::connect(m_ui.loadButton, SIGNAL(clicked()), this, SLOT(slotSelectDir()));
 }
 
 //-----------------------------------------------------------------------------------------------------------------
@@ -36,17 +36,19 @@ void Widget::slotSelectDir()
 //-----------------------------------------------------------------------------------------------------------------
 {
 	QString dirPath = ""; //Replace to select directory with images
-	//TODO
 
-	//if(dirPath != "")
+	// Open a filedialog box that allow selection of directory only and doesn't resolve symlinks (Unix only).
+	dirPath = QFileDialog::getExistingDirectory(this, tr("Select a directory"), "", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+	
+	if(dirPath != "")
 	{
 		ApplicationData::getInstance()->loadDirectory(dirPath);
 
 		//Connect segmentButton
-		//TODO
+		QObject::connect(m_ui.segmentButton, SIGNAL(clicked()), this, SLOT(slotSegmentData()));
 
 		//Initialize and show 2D view
-		//TODO
+		m_ui.view2D->initData();
 	}
 }
 
@@ -55,11 +57,11 @@ void Widget::slotSegmentData()
 //-----------------------------------------------------------------------------------------------------------------
 {
 	//Disconnect segment button
-	//TODO
-
+	QObject::disconnect(m_ui.segmentButton, SIGNAL(clicked()), this, SLOT(slotSegmentData()));
+	
 	//Segment data
 	ApplicationData::getInstance()->segmentData();
 
 	//Init and show 3D view
-	//TODO
+	m_ui.view3D->initData();
 }

@@ -3,7 +3,7 @@
 # ------------------------------------------------------------------------------
 # Set External libraries path
 # ------------------------------------------------------------------------------
-set( EXTERNAL_LIBS_DIR "C:/ExternalLibs" CACHE STRING "External libs Dir" )
+set( EXTERNAL_LIBS_DIR "C:/Users/DanAurea/Documents/TestImascap/ExternalLibs" CACHE STRING "External libs Dir" )
 
 # ------------------------------------------------------------------------------
 # set External libraries version

@@ -18,6 +18,15 @@ View2D::View2D(QWidget * p_parent)
 //-----------------------------------------------------------------------------------------------------------------
 {
 	m_ui.setupUi(this);
+	
+	// Connection is done at the construction of object so there is no call to connect each time
+	// data are initialized (each time a directory is selected).
+	
+	//Connect slider to 2D view.
+	QObject::connect(m_ui.slider, SIGNAL(valueChanged(int)), this, SLOT(slotUpdateSlice(int)), Qt::UniqueConnection);
+
+	//Connect slider to LCD number.
+	QObject::connect(m_ui.slider, SIGNAL(valueChanged(int)), m_ui.lcdNumber, SLOT(display(int)), Qt::UniqueConnection);
 }
 
 //-----------------------------------------------------------------------------------------------------------------
@@ -42,15 +51,10 @@ void View2D::initData()
 
 	//Set Z Slice and update view
 	m_viewer->SetZSlice(0);
-
+	
 	//Init slider
 	m_ui.slider->setRange(0, ApplicationData::getInstance()->getDimensionZ()-1);
 	m_ui.slider->setValue(0);
-
-	//Connect slider to 2D view
-	//TODO
-	//Connect slider to LCD number
-	//TODO
 
 	//Update color
 	double range[2];
@@ -58,15 +62,12 @@ void View2D::initData()
 
 	m_viewer->SetColorWindow(range[1] - range[0] );
 	m_viewer->SetColorLevel( (range[1]+range[0])/2 );
-
 }
 
 //-----------------------------------------------------------------------------------------------------------------
 void View2D::slotUpdateSlice(const int p_value)
 //-----------------------------------------------------------------------------------------------------------------
 {
-	qDebug() << "Update to slice:" << p_value;
-
 	m_viewer->SetZSlice(p_value); 
 	m_ui.view->update();
 }

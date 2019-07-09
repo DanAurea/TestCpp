@@ -80,7 +80,12 @@ class ApplicationData
 		static ApplicationData *m_instance;
 		
 		QString m_dirPath;								//! The path to the current processed directory
-		int m_dimensionZ;		//! The dimensions of the loaded scan
+		int m_dimensionX;
+		int m_dimensionY;
+		int m_dimensionZ;		//! The dimensions of the loaded 
+
+		double m_spacingX;
+		double m_spacingY;
 		double m_spacingZ;		//! The spacing for the loaded scan
 		
 		QList<ShortImageType::Pointer> m_rawImages;		//! Store the raw images
